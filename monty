@@ -1,0 +1,61 @@
+-- 1. DATABASE SCHEMA SETUP
+CREATE TABLE Student (
+    SID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Branch VARCHAR(50),
+    Year INT
+);
+
+CREATE TABLE Course (
+    CID INT PRIMARY KEY,
+    CName VARCHAR(50)
+);
+
+CREATE TABLE Enrollment (
+    SID INT,
+    CID INT,
+    Marks INT,
+    PRIMARY KEY (SID, CID),
+    FOREIGN KEY (SID) REFERENCES Student(SID),
+    FOREIGN KEY (CID) REFERENCES Course(CID)
+);
+
+-- 2. INSERT 5 RECORDS IN EACH TABLE
+INSERT INTO Student (SID, Name, Branch, Year) VALUES 
+(101, 'Alice', 'Computer', 2),
+(102, 'Bob', 'Electrical', 3),
+(103, 'Charlie', 'Computer', 2),
+(104, 'David', 'Mechanical', 4),
+(105, 'Eve', 'Computer', 1);
+
+INSERT INTO Course (CID, CName) VALUES 
+(1, 'Database Systems'),
+(2, 'Data Structures'),
+(3, 'Algorithms'),
+(4, 'Operating Systems'),
+(5, 'Computer Networks');
+
+INSERT INTO Enrollment (SID, CID, Marks) VALUES 
+(101, 1, 85),
+(102, 2, 70),
+(103, 1, 92),
+(104, 3, 65),
+(105, 4, 88);
+
+-- 3. SPECIFIC QUERIES
+-- a) Display all students from "Computer" branch
+SELECT * FROM Student WHERE Branch = 'Computer';
+
+-- b) Find average marks of each course
+SELECT CID, AVG(Marks) AS Average_Marks FROM Enrollment GROUP BY CID;
+
+-- c) List students who scored more than 75
+SELECT Student.Name, Enrollment.Marks 
+FROM Student 
+JOIN Enrollment ON Student.SID = Enrollment.SID 
+WHERE Enrollment.Marks > 75;
+
+-- d) Perform INNER JOIN on Student and Enrollment
+SELECT Student.SID, Student.Name, Enrollment.CID, Enrollment.Marks
+FROM Student
+INNER JOIN Enrollment ON Student.SID = Enrollment.SID;
