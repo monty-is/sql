@@ -1,0 +1,70 @@
+-- 1. DATABASE CREATION
+CREATE DATABASE HospitalManagement;
+USE HospitalManagement;
+
+-- 2. TABLES CREATION
+-- Patient Table
+CREATE TABLE Patient (
+    PID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Disease VARCHAR(100)
+);
+
+-- Doctor Table
+CREATE TABLE Doctor (
+    DID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Specialization VARCHAR(100)
+);
+
+-- Appointment Table (Links PID and DID)
+CREATE TABLE Appointment (
+    PID INT,
+    DID INT,
+    Date DATE,
+    FOREIGN KEY (PID) REFERENCES Patient(PID),
+    FOREIGN KEY (DID) REFERENCES Doctor(DID)
+);
+
+-- 3. INSERT SAMPLE DATA
+-- Adding Doctors
+INSERT INTO Doctor VALUES (101, 'Dr. Aryan', 'Cardiologist');
+INSERT INTO Doctor VALUES (102, 'Dr. Sneha', 'Dermatologist');
+INSERT INTO Doctor VALUES (103, 'Dr. Rohan', 'Neurologist');
+
+-- Adding Patients
+INSERT INTO Patient VALUES (1, 'Karan', 'Heart Ache');
+INSERT INTO Patient VALUES (2, 'Ishita', 'Skin Rash');
+INSERT INTO Patient VALUES (3, 'Varun', 'Migraine');
+INSERT INTO Patient VALUES (4, 'Maya', 'Fever');
+
+-- Adding Appointments (Maya ka koi appointment nahi rakhte for Query B)
+INSERT INTO Appointment VALUES (1, 101, '2026-05-01');
+INSERT INTO Appointment VALUES (2, 102, '2026-05-02');
+INSERT INTO Appointment VALUES (3, 103, '2026-05-03');
+
+
+-- 4. QUERIES SOLUTIONS
+
+-- a) Display patient and doctor details
+SELECT p.Name AS Patient_Name, d.Name AS Doctor_Name, d.Specialization
+FROM Appointment a
+JOIN Patient p ON a.PID = p.PID
+JOIN Doctor d ON a.DID = d.DID;
+
+-- b) Find patients who have no appointments
+SELECT Name FROM Patient 
+WHERE PID NOT IN (SELECT PID FROM Appointment);
+
+-- c) Count total doctors
+SELECT COUNT(*) AS Total_Doctors FROM Doctor;
+
+-- d) Create a VIEW for appointment details
+CREATE VIEW Appointment_Details_View AS
+SELECT p.Name AS Patient_Name, d.Name AS Doctor_Name, a.Date
+FROM Appointment a
+JOIN Patient p ON a.PID = p.PID
+JOIN Doctor d ON a.DID = d.DID;
+
+-- To test the view:
+SELECT * FROM Appointment_Details_View;
