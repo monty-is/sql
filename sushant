@@ -1,0 +1,61 @@
+-- ==========================================
+-- 1. Creation of Database and Tables (DDL)
+-- Database Name: CollegeDB
+-- ==========================================
+
+CREATE DATABASE CollegeDB;
+USE CollegeDB;
+
+-- Creating a sample Department table using DDL (Data Definition Language)
+CREATE TABLE Department (
+    DeptID INT PRIMARY KEY,
+    DeptName VARCHAR(50) NOT NULL,
+    Location VARCHAR(50)
+);
+
+-- Creating a sample Faculty table
+CREATE TABLE Faculty (
+    FacultyID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Designation VARCHAR(50),
+    DeptID INT,
+    FOREIGN KEY (DeptID) REFERENCES Department(DeptID)
+);
+
+-- ==========================================
+-- 2. Perform CRUD Operations (DML)
+-- Database Name: StudentDB
+-- ==========================================
+
+CREATE DATABASE StudentDB;
+USE StudentDB;
+
+-- Create table for CRUD demonstration
+CREATE TABLE Students (
+    RollNo INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Age INT,
+    City VARCHAR(50)
+);
+
+-- C: CREATE (INSERT) - Adding records
+INSERT INTO Students (RollNo, Name, Age, City) VALUES 
+(1, 'Amit Sharma', 20, 'Mumbai'),
+(2, 'Sneha Patil', 21, 'Pune'),
+(3, 'Raj Malhotra', 22, 'Delhi'),
+(4, 'Priya Rai', 20, 'Bangalore');
+
+-- R: READ (SELECT) - Viewing records
+SELECT * FROM Students;
+
+-- U: UPDATE - Modifying an existing record
+UPDATE Students 
+SET City = 'Chennai' 
+WHERE RollNo = 3;
+
+-- D: DELETE - Removing a record
+DELETE FROM Students 
+WHERE RollNo = 4;
+
+-- Final Select to see results of Update and Delete
+SELECT * FROM Students;
